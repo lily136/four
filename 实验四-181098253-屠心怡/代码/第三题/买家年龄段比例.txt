@@ -1,0 +1,85 @@
+hive> create table log(
+    > user_id int,
+    > item_id int,
+    > cat_id int,
+    > seller_id int,
+    > brand_id int,
+    > time_stamp string,
+    > action_type int)
+    > row format delimited
+    > fields terminated by ',';
+
+load data local inpath 'data_format1/user_log_format1.csv' into table log;
+
+insert overwrite table log 
+    > select * from log where time_stamp='1111';
+
+create table trueusers as
+    > select log.user_id from log where action_type=2;
+
+create table info(
+    > user_id int,
+    > age_range int,
+    > gender int)
+    > row format delimited
+    > fields terminated by ',';
+
+load data local inpath 'data_format1/user_info_format1.csv' into table info;
+
+
+create table ageone as
+    > select info.user_id from info where age_range=1;
+
+create table agetwo as
+    > select info.user_id from info where age_range=2;
+
+create table agethree as
+    > select info.user_id from info where age_range=3;
+
+create table agefour as
+    > select info.user_id from info where age_range=4;
+
+create table agefive as
+    > select info.user_id from info where age_range=5;
+
+create table agesix as
+    > select info.user_id from info where age_range=6;
+
+create table ageseven as
+    > select info.user_id from info where age_range=7;
+
+create table ageeight as
+    > select info.user_id from info where age_range=8;
+
+insert overwrite table ageone
+    > select user_id from ageone intersect select user_id from trueusers;
+
+insert overwrite table agetwo
+    > select user_id from agetwo intersect select user_id from trueusers;
+
+insert overwrite table agethree
+    > select user_id from agethree intersect select user_id from trueusers;
+
+insert overwrite table agefour
+    > select user_id from agefour intersect select user_id from trueusers;
+
+insert overwrite table agefive
+    > select user_id from agefive intersect select user_id from trueusers;
+
+insert overwrite table agesix
+    > select user_id from agesix intersect select user_id from trueusers;
+
+insert overwrite table ageseven
+    > select user_id from ageseven intersect select user_id from trueusers;
+
+insert overwrite table ageeight
+    > select user_id from ageeight intersect select user_id from trueusers;
+
+select count(user_id) from ageone;
+select count(user_id) from agetwo; 
+select count(user_id) from agethree;
+select count(user_id) from agefour; 
+select count(user_id) from agefive;
+select count(user_id) from agesix; 
+select count(user_id) from ageseven;
+select count(user_id) from ageeight; 
